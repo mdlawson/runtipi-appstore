@@ -1,0 +1,29 @@
+{
+  "$schema": "../dynamic-compose-schema.json",
+  "services": [
+    {
+      "name": "calibre-web-automated-book-downloader",
+      "image": "ghcr.io/calibrain/calibre-web-automated-book-downloader:latest",
+      "environment": {
+        "FLASK_PORT": 8084,
+        "LOG_LEVEL": "info",
+        "BOOK_LANGUAGE": "en",
+        "USE_BOOK_TITLE": "true",
+        "TZ": "${TZ}",
+        "APP_ENV": "prod",
+        "UID": 1000,
+        "GID": 1000,
+        "MAX_CONCURRENT_DOWNLOADS": 3,
+        "DOWNLOAD_PROGRESS_UPDATE_INTERVAL": 5
+      },
+      "internalPort": 8084,
+      "isMain": true,
+      "volumes": [
+        {
+          "hostPath": "${ROOT_FOLDER_HOST}/media/downloads/watch/books",
+          "containerPath": "/cwa-book-ingest"
+        }
+      ]
+    }
+  ]
+}
