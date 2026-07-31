@@ -4,6 +4,8 @@ import { fromError } from 'zod-validation-error';
 import fs from 'node:fs'
 import path from 'node:path'
 import { type } from "arktype";
+import { parseDocument } from 'yaml'
+import { dynamicComposeSchemaYaml } from '../schemas/compose-yaml.js'
 
 const getApps = async () => {
   const appsDir = await fs.promises.readdir(path.join(process.cwd(), 'apps'))
@@ -51,6 +53,27 @@ describe("each app should have a valid config.json", async () => {
       if (parsed instanceof type.errors) {
         const validationError = fromError(parsed);
         console.error(`Error parsing config.json for app ${app}:`, validationError.toString());
+      }
+
+      expect(parsed instanceof type.errors).toBe(false)
+    })
+  }
+})
+
+describe("each app should have a valid docker-compose.yml", async () => {
+  const apps = await getApps()
+
+  for (const app of apps) {
+    test(`app ${app} should have a valid docker-compose.yml`, async () => {
+      const fileContent = await getFile(app, 'docker-compose.yml')
+      const document = parseDocument(fileContent || '')
+
+      expect(document.errors).toHaveLength(0)
+
+      const parsed = dynamicComposeSchemaYaml(document.toJS())
+
+      if (parsed instanceof type.errors) {
+        console.error(`Error parsing docker-compose.yml for app ${app}:`, parsed.summary)
       }
 
       expect(parsed instanceof type.errors).toBe(false)

@@ -1,0 +1,52 @@
+{
+  "$schema": "../app-info-schema.json",
+  "name": "Terminus",
+  "id": "terminus",
+  "available": true,
+  "short_desc": "A self-hosted server for TRMNL e-paper devices.",
+  "author": "TRMNL",
+  "port": 2300,
+  "categories": [
+    "utilities"
+  ],
+  "description": "Terminus is a self-hosted server for managing TRMNL e-paper devices and their content.",
+  "tipi_version": 1,
+  "version": "latest",
+  "source": "https://github.com/usetrmnl/terminus",
+  "website": "https://usetrmnl.com/",
+  "exposable": true,
+  "supported_architectures": [
+    "arm64",
+    "amd64"
+  ],
+  "dynamic_config": true,
+  "form_fields": [
+    {
+      "type": "random",
+      "label": "Application secret",
+      "hint": "Generated automatically and used to secure Terminus sessions and data.",
+      "required": true,
+      "min": 64,
+      "encoding": "hex",
+      "env_variable": "APP_SECRET"
+    },
+    {
+      "type": "random",
+      "label": "Database password",
+      "hint": "Generated automatically and used only by Terminus and its database.",
+      "required": true,
+      "min": 64,
+      "encoding": "hex",
+      "env_variable": "DATABASE_PASSWORD"
+    },
+    {
+      "type": "random",
+      "label": "Valkey password",
+      "hint": "Generated automatically and used only by Terminus and its cache.",
+      "required": true,
+      "min": 64,
+      "encoding": "hex",
+      "env_variable": "KEYVALUE_PASSWORD"
+    }
+  ]
+}
