@@ -2,8 +2,8 @@ services:
   init-permissions:
     image: 'ghcr.io/usetrmnl/terminus:latest'
     user: root
-    entrypoint: ['/bin/sh', '-c']
-    command: chown -R 1000:1000 /app/public/fonts /app/public/uploads
+    entrypoint: ['chown']
+    command: ['-R', '1000:1000', '/app/public/fonts', '/app/public/uploads']
     volumes:
       - '${APP_DATA_DIR}/fonts:/app/public/fonts'
       - '${APP_DATA_DIR}/uploads:/app/public/uploads'
